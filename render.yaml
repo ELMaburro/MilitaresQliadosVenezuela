@@ -2,13 +2,12 @@ services:
   - name: backend
     type: web
     env: docker
-    plan: free
-    dockerfilePath: ./backend/Dockerfile
-    buildCommand: ./wait-for-db.sh
-    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    plan: starter  # Puedes elegir el plan adecuado para tu aplicación
+    buildCommand: ./backend/Dockerfile
+    startCommand: /wait-for-db.sh uvicorn app.main:app --host 0.0.0.0 --port 8000
     envVars:
       - key: DB_HOST
-        value: my-db
+        value: db
       - key: DB_PORT
         value: "3306"
       - key: DB_USER
@@ -17,25 +16,69 @@ services:
         value: ${DB_PASSWORD}
       - key: MYSQL_DATABASE
         value: ${MYSQL_DATABASE}
+    ports:
+      - port: 8000
 
   - name: frontend
     type: web
     env: docker
-    plan: free
-    dockerfilePath: ./frontend/Dockerfile
-    startCommand: npm start
+    plan: starter  # Puedes elegir el plan adecuado para tu aplicación
+    buildCommand: ./frontend/Dockerfile
+    startCommand: yarn start
     envVars:
       - key: NEXT_PUBLIC_BACKEND_URL
         value: ${BACKEND_URL}
+    ports:
+      - port: 3000
 
-databases:
-  - name: my-db
+  - name: db
+    type: database
     databaseType: mysql
     databaseVersion: "8.0"
-    starterCommand: ./init.sql
     envVars:
       - key: MYSQL_ROOT_PASSWORD
         value: ${MYSQL_ROOT_PASSWORD}
       - key: MYSQL_DATABASE
         value: ${MYSQL_DATABASE}
+    startCommand: >
+      sh -c "exec docker-entrypoint.sh mysqld --init-file /docker-entrypoint-initdb.d/init.sql"
+    disk:
+      - name: db_data
+        mountPath: /var/lib/mysql
+      - name: init_script
+        mountPath: /docker-entrypoint-initdb.d/init.sql
 
+disks:
+  - name: db_data
+  - name: init_script
+    content: |
+      -- phpMyAdmin SQL Dump
+      -- version 4.2.12
+      -- http://www.phpmyadmin.net
+      --
+      -- Host: http://www.dgim.mil.ve/
+      -- Generation Time: Jun 30, 2024 at 03:05 PM
+      -- Server version: 5.5
+      -- PHP Version: 5.6
+
+      SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+      SET time_zone = "+00:00";
+
+      /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+      /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+      /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+      /*!40101 SET NAMES utf8 */;
+
+      --
+      -- Database: `plantilla`
+      --
+
+      -- --------------------------------------------------------
+
+      --
+      -- Table structure for table `datos_personales`
+      --
+
+      CREATE TABLE IF NOT EXISTS `datos_personales` (
+        `cod_emp` varchar(7) NOT NULL DEFAULT '',
+  
