@@ -2,7 +2,7 @@ services:
   - name: backend
     type: web
     env: docker
-    plan: starter  # Puedes elegir el plan adecuado para tu aplicación
+    plan: starter
     buildCommand: docker build -t backend ./backend
     startCommand: /wait-for-db.sh uvicorn app.main:app --host 0.0.0.0 --port 8000
     envVars:
@@ -16,25 +16,22 @@ services:
         value: ${DB_PASSWORD}
       - key: MYSQL_DATABASE
         value: ${MYSQL_DATABASE}
-    ports:
-      - port: 8000
 
   - name: frontend
     type: web
     env: docker
-    plan: starter  # Puedes elegir el plan adecuado para tu aplicación
+    plan: starter
     buildCommand: docker build -t frontend ./frontend
     startCommand: yarn start
     envVars:
       - key: NEXT_PUBLIC_BACKEND_URL
         value: ${BACKEND_URL}
-    ports:
-      - port: 3000
 
   - name: db
     type: web
     env: docker
-    plan: starter  # Puedes elegir el plan adecuado para tu aplicación
+    plan: starter
+    dockerfilePath: ./Dockerfile  # Si tienes un Dockerfile para MySQL, de lo contrario usa image
     image: mysql:8.0
     startCommand: sh -c "exec mysqld --init-file /docker-entrypoint-initdb.d/init.sql"
     envVars:
@@ -47,12 +44,8 @@ services:
         mountPath: /var/lib/mysql
       - name: init_script
         mountPath: /docker-entrypoint-initdb.d/init.sql
-    ports:
-      - port: 3306
 
 volumes:
   - name: db_data
   - name: init_script
-    content: |
-      # Aquí va el contenido del archivo init.sql
-      # Copia el contenido de tu archivo init.sql aquí
+    hostPath: ./init.sql  # Especifica la ruta al archivo init.sql en tu sistema local
