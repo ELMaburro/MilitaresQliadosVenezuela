@@ -31,18 +31,14 @@ services:
     type: web
     env: docker
     plan: starter
-    # dockerfilePath: ./Dockerfile  # Descomenta y asegura que el Dockerfile exista si necesitas uno personalizado
+    dockerfilePath: ./db/Dockerfile  # Asegúrate de que el Dockerfile exista si necesitas uno personalizado
     buildCommand: docker build -t db ./db
+    startCommand: docker-entrypoint.sh mysqld
     envVars:
       - key: MYSQL_ROOT_PASSWORD
         value: ${MYSQL_ROOT_PASSWORD}  # Asegúrate de que esta variable esté definida en tu entorno
       - key: MYSQL_DATABASE
         value: ${MYSQL_DATABASE}  # Asegúrate de que esta variable esté definida en tu entorno
-    volumes:
-      - name: db_data
-        mountPath: /var/lib/mysql
+    # No se pueden definir volúmenes aquí, Render no lo soporta directamente.
 
-volumes:
-  - name: db_data
-  - name: init_script
-    hostPath: ./init.sql  # Especifica la ruta al archivo init.sql en tu sistema local
+# No definir volúmenes aquí, Render no lo soporta directamente.
