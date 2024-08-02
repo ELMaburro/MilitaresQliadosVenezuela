@@ -4,7 +4,6 @@ services:
     env: docker
     plan: starter
     buildCommand: docker build -t backend ./backend
-    startCommand: /wait-for-db.sh uvicorn app.main:app --host 0.0.0.0 --port 8000
     envVars:
       - key: DB_HOST
         value: db
@@ -22,7 +21,6 @@ services:
     env: docker
     plan: starter
     buildCommand: docker build -t frontend ./frontend
-    startCommand: yarn start
     envVars:
       - key: NEXT_PUBLIC_BACKEND_URL
         value: ${BACKEND_URL}
@@ -33,7 +31,6 @@ services:
     plan: starter
     dockerfilePath: ./db/Dockerfile  # Asegúrate de que el Dockerfile exista si necesitas uno personalizado
     buildCommand: docker build -t db ./db
-    startCommand: docker-entrypoint.sh mysqld
     envVars:
       - key: MYSQL_ROOT_PASSWORD
         value: ${MYSQL_ROOT_PASSWORD}  # Asegúrate de que esta variable esté definida en tu entorno
