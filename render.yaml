@@ -35,7 +35,7 @@ services:
     type: web
     env: docker
     plan: starter  # Puedes elegir el plan adecuado para tu aplicación
-    image: mysql:8.0
+    image: "mysql:8.0"
     startCommand: mysqld
     envVars:
       - key: MYSQL_ROOT_PASSWORD
