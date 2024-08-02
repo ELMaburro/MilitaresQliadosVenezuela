@@ -31,19 +31,16 @@ services:
     type: web
     env: docker
     plan: starter
-    dockerfilePath: ./Dockerfile  # Si tienes un Dockerfile para MySQL, de lo contrario usa image
-    image: mysql:8.0
-    startCommand: sh -c "exec mysqld --init-file /docker-entrypoint-initdb.d/init.sql"
+    # dockerfilePath: ./Dockerfile  # Descomenta y asegura que el Dockerfile exista si necesitas uno personalizado
+    buildCommand: docker build -t db ./db
     envVars:
       - key: MYSQL_ROOT_PASSWORD
-        value: ${MYSQL_ROOT_PASSWORD}
+        value: ${MYSQL_ROOT_PASSWORD}  # Asegúrate de que esta variable esté definida en tu entorno
       - key: MYSQL_DATABASE
-        value: ${MYSQL_DATABASE}
+        value: ${MYSQL_DATABASE}  # Asegúrate de que esta variable esté definida en tu entorno
     volumes:
       - name: db_data
         mountPath: /var/lib/mysql
-      - name: init_script
-        mountPath: /docker-entrypoint-initdb.d/init.sql
 
 volumes:
   - name: db_data
