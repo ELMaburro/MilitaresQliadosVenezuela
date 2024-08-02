@@ -35,8 +35,8 @@ services:
     type: web
     env: docker
     plan: starter  # Puedes elegir el plan adecuado para tu aplicación
-    image: "mysql:8.0"
-    startCommand: mysqld
+    image: mysql:8.0
+    startCommand: sh -c "exec mysqld --init-file /docker-entrypoint-initdb.d/init.sql"
     envVars:
       - key: MYSQL_ROOT_PASSWORD
         value: ${MYSQL_ROOT_PASSWORD}
@@ -53,71 +53,6 @@ services:
 volumes:
   - name: db_data
   - name: init_script
-    data: |
-      -- phpMyAdmin SQL Dump
-      -- version 4.2.12
-      -- http://www.phpmyadmin.net
-      --
-      -- Host: http://www.dgim.mil.ve/
-      -- Generation Time: Jun 30, 2024 at 03:05 PM
-      -- Server version: 5.5
-      -- PHP Version: 5.6
-
-      SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-      SET time_zone = "+00:00";
-
-      /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-      /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-      /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-      /*!40101 SET NAMES utf8 */;
-
-      --
-      -- Database: `plantilla`
-      --
-
-      -- --------------------------------------------------------
-
-      --
-      -- Table structure for table `datos_personales`
-      --
-
-      CREATE TABLE IF NOT EXISTS `datos_personales` (
-        `cod_emp` varchar(7) NOT NULL DEFAULT '',
-        `cedula` varchar(8) NOT NULL DEFAULT '',
-        `grado_militar` varchar(40) NOT NULL DEFAULT '',
-        `apellido1` varchar(80) NOT NULL,
-        `apellido2` varchar(50) DEFAULT NULL,
-        `nombre1` varchar(50) NOT NULL,
-        `nombre2` varchar(50) DEFAULT NULL,
-        `ubicacion` varchar(100) NOT NULL DEFAULT '',
-        `ubicacion_detallada` varchar(200) NOT NULL DEFAULT '',
-        `cargo` varchar(100) NOT NULL DEFAULT '',
-        `tipo_emp` varchar(20) NOT NULL DEFAULT '',
-        `categoria` varchar(255) NOT NULL DEFAULT '',
-        `sueldo` varchar(11) NOT NULL DEFAULT '',
-        `fecha_nacim` date NOT NULL DEFAULT '0000-00-00',
-        `sexo` varchar(10) NOT NULL DEFAULT '',
-        `estado_civil` varchar(17) NOT NULL DEFAULT '',
-        `nivel_instruccion` varchar(15) NOT NULL DEFAULT '',
-        `direccion` varchar(200) NOT NULL DEFAULT '',
-        `ciudad` varchar(20) NOT NULL DEFAULT '',
-        `estado` varchar(20) NOT NULL DEFAULT '',
-        `telefono_cel` varchar(15) NOT NULL DEFAULT '',
-        `telefono_ofi` varchar(15) NOT NULL DEFAULT '',
-        `correo` varchar(30) NOT NULL DEFAULT '',
-        `ciudad_origen` varchar(80) NOT NULL,
-        `estados_origen` varchar(80) NOT NULL,
-        `vivienda` varchar(255) NOT NULL DEFAULT '',
-        `discapacidad` varchar(255) NOT NULL DEFAULT '',
-        `riesgo` varchar(255) NOT NULL DEFAULT ''
-      ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
-      --
-      -- Dumping data for table `datos_personales`
-      --
-
-      INSERT INTO `datos_personales` (`cod_emp`, `cedula`, `grado_militar`, `apellido1`, `apellido2`, `nombre1`, `nombre2`, `ubicacion`, `ubicacion_detallada`, `cargo`, `tipo_emp`, `categoria`, `sueldo`, `fecha_nacim`, `sexo`, `estado_civil`, `nivel_instruccion`, `direccion`, `ciudad`, `estado`, `telefono_cel`, `telefono_ofi`, `correo`, `ciudad_origen`, `estados_origen`, `vivienda`, `discapacidad`, `riesgo`) VALUES
-      ('28641', '20922286', '80', 'GIOVANNY', 'JOSUE', 'SIVIRA', 'CAPDEVILLA', 'A05008000', 'COMANDANCIA GENERAL DE LA AVIACIÓN ', 'ADJUNTO AL DEPARTAMENTO DE PERSONAL', 'MILITAR', '5', '', '1990-05-16', 'MASCULINO', 'CASADO', '6', 'CALLE 24 ENTRE 32 Y 33 ', '422', '13', '04120575776', '02129081407', 'SIVIRA_1990@HOTMAIL.COM', '422', '13', 'NINGUNA', 'NO', 'NO'),
-      ('35084', '8273835', '80', 'RAFAEL', 'ANTONIO', 'GONZALEZ', NULL, 'A05008000', 'COMANDANCIA GENERAL', 'ADJUNTO AL DEPARTAMENTO DE REDES', 'MILITAR', '2', '', '1972-08-14', 'MASCULINO', 'SOLTERO', '6', 'CARRETERA NACIONAL CANTAURA-EL TIGRE, RES. CAMPO TACHIRA, N 103', '48', '3', '04268806148', '02129081243', 'ragonzalez@aviacion.mil.ve', '33', '3', 'NINGUNA', 'NO', 'NO'),
-      ('57055', '19148092', '470', 'DIEGO', 'HUMBERTO', 'ZUE', 'RUSSO', 'A05008000', 'COMANDANCIA GENERAL DE LA AVIACIÓN ', 'ADJUNTO AL DEPARTAMENTO DE REDES', 'MILITAR', '1', '', '1988-09-20', 'MASCULINO', 'SOLTERO', '4', 'CALLE 2 CASA NUEMERO 10', '869', '21', '04247010100', '02129081243', 'DIEGO.H.88.ZUE@GMAIL.COM', '888', '21', 'NINGUNA', 'NO', 'NO'),
-      ('49654', '24297810', '470', 'GENESIS', 'YULITZA', 'APONTE', 'LOPEZ', 'A05008000', 'COMANDANCIA GENERAL DE LA AVIACION', 'ADJ DEPARTAMENTO DE PERSONAL', 'MILITAR', '1', '', '1995-11-27', 'FEMENINO', 'CASADO', '4', 'SECTOR CRISTO SALVA CALLE 8', '241', '8', '04244452141', '02129081407', 'GENE.APONTE13@GMAIL.COM', '241', '8', 'NINGUNA', 'NO', 'NO'),
+    content: |
+      # Aquí va el contenido del archivo init.sql
+      # Copia el contenido de tu archivo init.sql aquí
