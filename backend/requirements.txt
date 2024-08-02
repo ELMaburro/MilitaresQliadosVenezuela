@@ -1,0 +1,7 @@
+fastapi
+uvicorn
+sqlalchemy
+mysql-connector-python
+pydantic==2.8.2
+pydantic-settings~=2.3.4
+python-dotenv==1.0.1

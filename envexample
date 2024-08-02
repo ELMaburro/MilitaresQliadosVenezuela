@@ -1,0 +1,8 @@
+MYSQL_ROOT_PASSWORD=password
+MYSQL_DATABASE=plantilla
+DB_HOST=db
+DB_PORT=3306
+DB_USER=root
+DB_PASSWORD=password
+BACKEND_URL="http://backend:8000"
+FRONTEND_URL="http://frontend:3000"
