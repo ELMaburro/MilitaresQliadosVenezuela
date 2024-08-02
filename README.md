@@ -12,8 +12,8 @@ docker compose up --build
 
 Environment variables
 
-crear un archivo .env
-
+crear un archivo .env en la direccion root del proyecto, es decir en la donde esta el docker-compose.
+Para producciíon recuerden poner un password más seguro.
 ```sh
 MYSQL_ROOT_PASSWORD=password
 MYSQL_DATABASE=plantilla
