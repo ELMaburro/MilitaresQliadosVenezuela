@@ -30,15 +30,12 @@ services:
 
 databases:
   - name: my-db
-    type: mysql
-    version: 8.4.2
-    initialScriptPath: ./init.sql
+    databaseType: mysql
+    databaseVersion: "8.0"
+    starterCommand: ./init.sql
     envVars:
       - key: MYSQL_ROOT_PASSWORD
         value: ${MYSQL_ROOT_PASSWORD}
       - key: MYSQL_DATABASE
         value: ${MYSQL_DATABASE}
 
-volumes:
-  - name: db_data
-    mountPath: /var/lib/mysql
