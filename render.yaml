@@ -1,0 +1,46 @@
+services:
+  - name: backend
+    type: web
+    env: docker
+    plan: free
+    dockerfilePath: ./backend/Dockerfile
+    buildCommand: ./wait-for-db.sh
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 8000
+    envVars:
+      - key: DB_HOST
+        fromDatabase: my-db
+      - key: DB_PORT
+        value: "3306"
+      - key: DB_USER
+        fromDatabase: my-db
+      - key: DB_PASSWORD
+        fromDatabase: my-db
+      - key: MYSQL_DATABASE
+        fromDatabase: my-db
+    databases:
+      - name: my-db
+
+  - name: frontend
+    type: web
+    env: docker
+    plan: free
+    dockerfilePath: ./frontend/Dockerfile
+    startCommand: npm start
+    envVars:
+      - key: NEXT_PUBLIC_BACKEND_URL
+        value: ${BACKEND_URL}
+
+databases:
+  - name: my-db
+    engine: mysql
+    version: 8.4.2
+    initialScript: ./init.sql
+    envVars:
+      - key: MYSQL_ROOT_PASSWORD
+        value: ${MYSQL_ROOT_PASSWORD}
+      - key: MYSQL_DATABASE
+        value: ${MYSQL_DATABASE}
+
+volumes:
+  - name: db_data
+    mountPath: /var/lib/mysql
